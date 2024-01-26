@@ -1,4 +1,4 @@
-package br.jus.trece.regulusApi.model;
+package br.jus.trece.regulusApi.db.regulus.domain;
 
 import jakarta.persistence.*;
 

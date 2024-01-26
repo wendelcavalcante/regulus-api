@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.jus.trece.regulusApi.model.Estado;
-import br.jus.trece.regulusApi.repository.EstadoRepository;
+import br.jus.trece.regulusApi.db.regulus.domain.Estado;
+import br.jus.trece.regulusApi.db.regulus.repo.EstadoRepository;
 
 @CrossOrigin(origins = "*")
 @RestController
