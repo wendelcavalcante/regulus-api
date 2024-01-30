@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.jus.trece.regulusApi.db.juris.domain.MagistradoJuris;
+import br.jus.trece.regulusApi.db.juris.repo.MagistradoJurisRepository;
 import br.jus.trece.regulusApi.db.regulus.domain.Estado;
 import br.jus.trece.regulusApi.db.regulus.repo.EstadoRepository;
 
@@ -22,6 +24,9 @@ public class Controller {
 
 	@Autowired
 	EstadoRepository estadoRepository;
+
+	@Autowired
+	MagistradoJurisRepository magistradoJurisRepository;
 
 	@GetMapping("/estados")
 	public ResponseEntity<List<Estado>> getAllEstados() {
@@ -35,6 +40,23 @@ public class Controller {
 			}
 
 			return new ResponseEntity<>(estados, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	@GetMapping("/magistrados")
+	public ResponseEntity<List<MagistradoJuris>> getAllMagistradosJuris() {
+		try {
+			List<MagistradoJuris> magistrados = new ArrayList<MagistradoJuris>();
+
+			magistradoJurisRepository.findAll().forEach(magistrados::add);
+
+			if (magistrados.isEmpty()) {
+				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+			}
+
+			return new ResponseEntity<>(magistrados, HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 		}

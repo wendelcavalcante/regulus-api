@@ -5,10 +5,15 @@ import java.util.Arrays;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
+/*@EntityScan({"br.jus.trece.regulusApi.db.juris.domain", "br.jus.trece.regulusApi.db.regulus.domain"})
+@EnableJpaRepositories*/
+//({"br.jus.trece.regulusApi.db.regulus.repo", "br.jus.trece.regulusApi.db.juris.repo"})
 public class RegulusApiApplication {
 
 	public static void main(String[] args) {
