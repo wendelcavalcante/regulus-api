@@ -13,16 +13,16 @@ import jakarta.persistence.Table;
 public class MunicipioDc {
     @Id
     @Column(name = "id_munic")
-    private long id;
+    private String id;
 
     @Column(name = "nm_munic")
     private String nome;
 
-    public long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -34,5 +34,9 @@ public class MunicipioDc {
         this.nome = nome;
     }
 
+    @Override
+    public String toString() {
+        return super.toString() + " - " + nome;
+    }
     
 }
