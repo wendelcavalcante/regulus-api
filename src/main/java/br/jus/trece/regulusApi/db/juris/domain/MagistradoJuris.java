@@ -17,6 +17,12 @@ public class MagistradoJuris {
     @Column(name = "id_autoridade")
     private int idAutoridade;
 
+    @Column(name = "dias_sem_mandato")
+    private Integer diasSemMandato;
+
+    @Column(name = "id_servidor_tj")
+    private Integer idServidorTj;
+
     public int getIdAutoridade() {
         return idAutoridade;
     }
@@ -25,6 +31,20 @@ public class MagistradoJuris {
         this.idAutoridade = idAutoridade;
     }
 
-    
+    public Integer getDiasSemMandato() {
+        return diasSemMandato;
+    }
+
+    public void setDiasSemMandato(Integer diasSemMandato) {
+        this.diasSemMandato = diasSemMandato;
+    }
+
+    public Integer getIdServidorTj() {
+        return idServidorTj;
+    }
+
+    public void setIdServidorTj(Integer idServidorTj) {
+        this.idServidorTj = idServidorTj;
+    }
 
 }

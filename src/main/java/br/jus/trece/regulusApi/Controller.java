@@ -21,8 +21,10 @@ import br.jus.trece.regulusApi.db.dadosCorporativos.repo.ZonaConsultaDcRepositor
 import br.jus.trece.regulusApi.db.dadosCorporativos.repo.ZonaDcRepository;
 import br.jus.trece.regulusApi.db.juris.domain.MagistradoJuris;
 import br.jus.trece.regulusApi.db.juris.repo.MagistradoJurisRepository;
+import br.jus.trece.regulusApi.db.regulus.domain.Distancia;
 import br.jus.trece.regulusApi.db.regulus.domain.Estado;
 import br.jus.trece.regulusApi.db.regulus.domain.Magistrado;
+import br.jus.trece.regulusApi.db.regulus.repo.DistanciaRepository;
 import br.jus.trece.regulusApi.db.regulus.repo.EstadoRepository;
 import br.jus.trece.regulusApi.db.regulus.repo.MagistradoRepository;
 import br.jus.trece.regulusApi.db.regulus.repo.QueriesRepository;
@@ -49,6 +51,9 @@ public class Controller {
 
 	@Autowired
 	ZonaConsultaDcRepository zonaConsultaDcRepository;
+
+	@Autowired
+	DistanciaRepository distanciaRepository;
 
 	/*@Autowired
 	@Qualifier(value = "regulusEntityManagerFactory")
@@ -139,19 +144,45 @@ public class Controller {
 		}
 	}
 
+	@GetMapping("/distancias")
+	public ResponseEntity<List<Distancia>> getAllDistancias() {
+		try {
+			List<Distancia> distancias = new ArrayList<Distancia>();
+
+			distancias = distanciaRepository.findAll();
+			//distanciaRepository.findAll().forEach(distancias::add);
+
+			if (distancias.isEmpty()) {
+				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+			}
+
+			return new ResponseEntity<>(distancias, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
 	@GetMapping("/magistrados_regulus")
 	public ResponseEntity<List<Magistrado>> getAllMagistradosRegulus() {
 		try {
+			List<MagistradoJuris> magistradosJuris = magistradoJurisRepository.findAll();
+
 			List<Magistrado> magistrados = new ArrayList<Magistrado>();
-
-			//queriesRepository.findMagistradosComDistancias().forEach(magistrados::add);
-			//magistradoRepository.findAll().forEach(magistrados::add);
-
-			List<Object[]> lst = magistradoRepository.findMagistradosComDistancias();
+			List<Object[]> lst = magistradoRepository.findMagistradosComDistancias("Fortaleza");
 						
 			for(Object o[] : lst) {
+				Magistrado mr = (Magistrado)o[0];
+				mr.setDistanciaZona(((Distancia)o[1]).getDistancia());
 				magistrados.add((Magistrado)o[0]);
+
+				for(MagistradoJuris mj : magistradosJuris) {
+					if(mr.getMatricula() == mj.getIdServidorTj()) {
+						mr.setDiasSemMandato(mj.getDiasSemMandato());
+					}
+				}
 			}
+
+			
 
 			if (magistrados.isEmpty()) {
 				return new ResponseEntity<>(HttpStatus.NO_CONTENT);

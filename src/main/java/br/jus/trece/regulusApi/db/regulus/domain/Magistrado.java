@@ -5,8 +5,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 @Entity
 @Table(name = "magistrado")
@@ -18,6 +18,15 @@ public class Magistrado {
 
     @Column(name = "nome")
     private String nome;
+
+    @Column(name = "matricula")
+    private Integer matricula;
+
+    @Transient
+    private float distanciaZona;
+
+    @Transient
+    private Integer diasSemMandato = 10000;
 
     public long getId() {
         return id;
@@ -47,6 +56,29 @@ public class Magistrado {
         this.comarca = comarca;
     }
 
-    
+    public float getDistanciaZona() {
+        return distanciaZona;
+    }
+
+    public void setDistanciaZona(float distanciaZona) {
+        this.distanciaZona = distanciaZona;
+    }
+
+    public Integer getMatricula() {
+        return matricula;
+    }
+
+    public void setMatricula(Integer matricula) {
+        this.matricula = matricula;
+    }
+
+    public Integer getDiasSemMandato() {
+        return diasSemMandato;
+    }
+
+    public void setDiasSemMandato(Integer diasSemMandato) {
+        this.diasSemMandato = diasSemMandato;
+    }
+            
 
 }
