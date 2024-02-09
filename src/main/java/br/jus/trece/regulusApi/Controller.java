@@ -173,16 +173,15 @@ public class Controller {
 			for(Object o[] : lst) {
 				Magistrado mr = (Magistrado)o[0];
 				mr.setDistanciaZona(((Distancia)o[1]).getDistancia());
-				magistrados.add((Magistrado)o[0]);
+				magistrados.add(mr);
 
 				for(MagistradoJuris mj : magistradosJuris) {
-					if(mr.getMatricula() == mj.getIdServidorTj()) {
-						mr.setDiasSemMandato(mj.getDiasSemMandato());
-					}
+					if(mr.getMatricula() != null)
+						if(mr.getMatricula().equals(mj.getIdServidorTj())) {
+							mr.setDiasSemMandato(mj.getDiasSemMandato());
+						}
 				}
 			}
-
-			
 
 			if (magistrados.isEmpty()) {
 				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
