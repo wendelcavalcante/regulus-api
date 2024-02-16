@@ -8,6 +8,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 @Entity
 @Immutable
@@ -41,14 +42,12 @@ public class ZonaDc {
         this.numero = numero;
     }
 
-    public MunicipioDc getMunicipioSede() {
+    public MunicipioDc getSede() {
         return sede;
     }
 
-    public void setMunicipioSede(MunicipioDc sede) {
+    public void setSede(MunicipioDc sede) {
         this.sede = sede;
     }
-
-    
 
 }
