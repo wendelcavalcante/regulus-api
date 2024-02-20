@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.jus.trece.regulusApi.db.dadosCorporativos.domain.MunicipioDc;
@@ -162,13 +163,13 @@ public class Controller {
 		}
 	}
 
-	@GetMapping("/magistrados_regulus")
-	public ResponseEntity<List<Magistrado>> getAllMagistradosRegulus() {
+	@GetMapping("/magistrados_zona")
+	public ResponseEntity<List<Magistrado>> getAllMagistradosRegulus(@RequestParam String sede) {
 		try {
 			List<MagistradoJuris> magistradosJuris = magistradoJurisRepository.findAll();
 
 			List<Magistrado> magistrados = new ArrayList<Magistrado>();
-			List<Object[]> lst = magistradoRepository.findMagistradosComDistancias("Fortaleza");
+			List<Object[]> lst = magistradoRepository.findMagistradosComDistancias(sede);
 						
 			for(Object o[] : lst) {
 				Magistrado mr = (Magistrado)o[0];

@@ -20,7 +20,7 @@ public interface MagistradoRepository extends JpaRepository<Magistrado, Integer>
            "  JOIN FETCH m.comarca"+
            "  JOIN FETCH d.origem"+
            "  JOIN FETCH d.destino"+
-           " where d.destino.nome = :destino and m.comarca.codigoIbge = d.origem.codigoIbge "+
+           " where upper(d.destino.nome) = upper(:destino) and m.comarca.codigoIbge = d.origem.codigoIbge "+
            " order by d.distancia asc")
     List<Object[]> findMagistradosComDistancias(@Param("destino") String destino);
 
