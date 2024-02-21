@@ -3,9 +3,11 @@ package br.jus.trece.regulusApi;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,6 +31,9 @@ import br.jus.trece.regulusApi.db.regulus.repo.DistanciaRepository;
 import br.jus.trece.regulusApi.db.regulus.repo.EstadoRepository;
 import br.jus.trece.regulusApi.db.regulus.repo.MagistradoRepository;
 import br.jus.trece.regulusApi.db.regulus.repo.QueriesRepository;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -129,11 +134,11 @@ public class Controller {
 	}
 
 	@GetMapping("/magistrados")
-	public ResponseEntity<List<MagistradoJuris>> getAllMagistradosJuris() {
+	public ResponseEntity<List<Magistrado>> getAllMagistradosJuris() {
 		try {
-			List<MagistradoJuris> magistrados = new ArrayList<MagistradoJuris>();
+			List<Magistrado> magistrados = new ArrayList<Magistrado>();
 
-			magistradoJurisRepository.findAll().forEach(magistrados::add);
+			magistradoRepository.findAll().forEach(magistrados::add);
 
 			if (magistrados.isEmpty()) {
 				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -193,5 +198,31 @@ public class Controller {
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+
+	@PostMapping(path = "/update_magistrado", 
+				 consumes = {MediaType.APPLICATION_JSON_VALUE})
+	public String updateMagistradado(@RequestBody MagistradoRequestModel mrm) {
+		//TODO: process POST request
+		Magistrado mag = new Magistrado();
+		BeanUtils.copyProperties(mrm, mag);	
+		System.out.println(mag);
+		return mag.toString();
+	}
+	
+	/*public ResponseEntity<List<MunicipioDc>> getAllMunicipios() {
+		try {
+			List<MunicipioDc> municipios = new ArrayList<MunicipioDc>();
+
+			municipioDcRepository.findAll().forEach(municipios::add);
+
+			if (municipios.isEmpty()) {
+				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+			}
+
+			return new ResponseEntity<>(municipios, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}*/
 
 }

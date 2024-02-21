@@ -22,11 +22,15 @@ public class Magistrado {
     @Column(name = "matricula")
     private Integer matricula;
 
+    @Column(name = "email")
+    private String email;
+
     @Transient
     private float distanciaZona;
 
     @Transient
     private Integer diasSemMandato = 10000;
+
 
     public long getId() {
         return id;
@@ -79,6 +83,22 @@ public class Magistrado {
     public void setDiasSemMandato(Integer diasSemMandato) {
         this.diasSemMandato = diasSemMandato;
     }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    @Override
+    public String toString() {
+        return "Magistrado [id=" + id + ", nome=" + nome + ", matricula=" + matricula + ", email=" + email
+                + ", distanciaZona=" + distanciaZona + ", diasSemMandato=" + diasSemMandato + ", comarca=" + comarca
+                + "]";
+    }
             
+    
 
 }
