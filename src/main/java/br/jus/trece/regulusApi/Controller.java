@@ -202,10 +202,9 @@ public class Controller {
 	@PostMapping(path = "/update_magistrado", 
 				 consumes = {MediaType.APPLICATION_JSON_VALUE})
 	public String updateMagistradado(@RequestBody MagistradoRequestModel mrm) {
-		//TODO: process POST request
-		Magistrado mag = new Magistrado();
-		BeanUtils.copyProperties(mrm, mag);	
-		System.out.println(mag);
+		Magistrado mag = magistradoRepository.findById(mrm.getId()).get();
+		mag.setNome(mrm.getNome());
+		magistradoRepository.saveAndFlush(mag);
 		return mag.toString();
 	}
 	

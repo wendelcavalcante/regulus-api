@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import br.jus.trece.regulusApi.db.regulus.domain.Magistrado;
 
 @Repository
-public interface MagistradoRepository extends JpaRepository<Magistrado, Integer>{
+public interface MagistradoRepository extends JpaRepository<Magistrado, Long>{
     
     @Query("select m from Magistrado m JOIN FETCH m.comarca")
     List<Magistrado> findAll();
