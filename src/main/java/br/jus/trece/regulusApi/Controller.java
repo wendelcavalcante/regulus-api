@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.jus.trece.regulusApi.bean.LoginBean;
 import br.jus.trece.regulusApi.db.dadosCorporativos.domain.MunicipioDc;
 import br.jus.trece.regulusApi.db.dadosCorporativos.domain.ZonaConsultaDc;
 import br.jus.trece.regulusApi.db.dadosCorporativos.domain.ZonaDc;
@@ -41,6 +43,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class Controller {
 
 	@Autowired
+	LoginBean loginBean;
+
+	@Autowired
 	EstadoRepository estadoRepository;
 
 	@Autowired
@@ -61,9 +66,16 @@ public class Controller {
 	@Autowired
 	DistanciaRepository distanciaRepository;
 
-	/*@Autowired
-	@Qualifier(value = "regulusEntityManagerFactory")
-	QueriesRepository queriesRepository;*/
+	@GetMapping("/autenticar")
+	public String autenticar() {
+		try {
+			loginBean.entrar();
+			return "ok";
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "erro";//new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
 
 	@GetMapping("/estados")
 	public ResponseEntity<List<Estado>> getAllEstados() {
@@ -81,6 +93,7 @@ public class Controller {
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+
 
 	@GetMapping("/zonas")
 	public ResponseEntity<List<ZonaDc>> getAllZonas() {
