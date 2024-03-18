@@ -27,9 +27,9 @@ public class TreApiClient {
         ClientResponse response = webResource.type(MediaType.APPLICATION_JSON).post(ClientResponse.class, getUsuarioJson(login, senha));
 
         if (response.getStatus() == 200) {
-				JsonObject jo = new Gson().fromJson(response.getEntity(String.class), JsonObject.class);
-	
-				return new Gson().fromJson(jo, new TypeToken<Token>() {}.getType());
+            JsonObject jo = new Gson().fromJson(response.getEntity(String.class), JsonObject.class);
+
+            return new Gson().fromJson(jo, new TypeToken<Token>() {}.getType());
 			// erro de autenticação.
         } else if (response.getStatus() == 401) {
             return null;
