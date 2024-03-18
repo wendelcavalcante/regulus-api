@@ -77,6 +77,18 @@ public class Controller {
 		}
 	}
 
+	@GetMapping("/verificar")
+	public String verificar() {
+		try {
+			loginBean.isLogged();
+			return "ok";
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "erro";//new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
+
 	@GetMapping("/estados")
 	public ResponseEntity<List<Estado>> getAllEstados() {
 		try {
