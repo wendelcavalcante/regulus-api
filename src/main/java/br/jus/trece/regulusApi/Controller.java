@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.jus.trece.api.domain.Token;
 import br.jus.trece.regulusApi.bean.LoginBean;
 import br.jus.trece.regulusApi.db.dadosCorporativos.domain.MunicipioDc;
 import br.jus.trece.regulusApi.db.dadosCorporativos.domain.ZonaConsultaDc;
@@ -66,14 +67,15 @@ public class Controller {
 	@Autowired
 	DistanciaRepository distanciaRepository;
 
-	@GetMapping("/autenticar")
-	public String autenticar() {
+	@PostMapping("/autenticar")
+	public ResponseEntity<Token> autenticar(@RequestBody LoginRequestModel loginRequestModel) {
 		try {
-			loginBean.entrar();
-			return "ok";
+			Token token = loginBean.entrar(loginRequestModel.getLogin(), loginRequestModel.getSenha());
+			ResponseEntity<Token> response = new ResponseEntity<Token>(token, HttpStatus.OK);
+			return response;
 		} catch (Exception e) {
 			e.printStackTrace();
-			return "erro";//new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
