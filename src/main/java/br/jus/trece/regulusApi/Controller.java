@@ -67,11 +67,14 @@ public class Controller {
 	@Autowired
 	DistanciaRepository distanciaRepository;
 
-	@PostMapping("/autenticar")
+	@GetMapping("/autenticar")
 	public ResponseEntity<Token> autenticar(@RequestBody LoginRequestModel loginRequestModel) {
 		try {
-			Token token = loginBean.entrar(loginRequestModel.getLogin(), loginRequestModel.getSenha());
-			ResponseEntity<Token> response = new ResponseEntity<Token>(token, HttpStatus.OK);
+			System.out.println("teste pré");
+			//Token token = loginBean.entrar(loginRequestModel.getLogin(), loginRequestModel.getSenha());
+			System.out.println("teste pós");
+			//ResponseEntity<Token> response = new ResponseEntity<Token>(token, HttpStatus.OK); 
+			ResponseEntity<Token> response = new ResponseEntity<>(null, HttpStatus.OK); 
 			return response;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -94,6 +97,7 @@ public class Controller {
 	@GetMapping("/estados")
 	public ResponseEntity<List<Estado>> getAllEstados() {
 		try {
+			System.out.println("teste fsdfkjashfkjshk");
 			List<Estado> estados = new ArrayList<Estado>();
 
 			estadoRepository.findAll().forEach(estados::add);
