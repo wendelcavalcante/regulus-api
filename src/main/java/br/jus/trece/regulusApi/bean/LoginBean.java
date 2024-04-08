@@ -11,6 +11,8 @@ import br.jus.trece.api.domain.corporativo.Usuario;
 import br.jus.trece.regulusApi.client.TreApiClient;
 import br.jus.trece.regulusApi.db.regulus.domain.Parametro;
 import br.jus.trece.regulusApi.db.regulus.repo.ParametroRepository;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -43,12 +45,17 @@ public class LoginBean {
     private SecurityContextRepository securityContextRepository =
         new HttpSessionSecurityContextRepository();
 
-    public Token entrar(String login, String senha) {
+    public Token entrar(String login, String senha, HttpServletRequest request, HttpServletResponse response) {
+        //SecurityContext sc1 = SecurityContextHolder.getContext();
+        SecurityContext sc = SecurityContextHolder.getContext();
+        
         Token token = treApiClient.autenticar(login, senha);
         this.sessaoBean.setToken(token);
         Integer matricula = treApiClient.buscarMatriculaPorLogin(login);
         String matString = String.format("%05d", matricula);
         Usuario usuario = treApiClient.buscarUsuarioPorId(matString);
+        sessaoBean.setUsuario(usuario);
+        sessaoBean.setPerfil("ADMIN");
         List<String> perfis = treApiClient.listarPerfis((long)this.sessaoBean.getParametro().getIdSistema(), matString);
         System.out.println("resultado: "+perfis.get(0));
 
@@ -58,8 +65,10 @@ public class LoginBean {
         Authentication authenticated = new UsernamePasswordAuthenticationToken(
                 principal, senha, principal.getAuthorities());
         
-        SecurityContext sc = SecurityContextHolder.getContext();
         sc.setAuthentication(authenticated);
+        SecurityContextHolder.setContext(sc);
+        securityContextRepository.saveContext(sc, request, response);
+        
         //Authentication auth = authManager.authenticate(authReq);
         return token;
     }

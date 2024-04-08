@@ -10,6 +10,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
+import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,6 +41,9 @@ import br.jus.trece.regulusApi.db.regulus.repo.DistanciaRepository;
 import br.jus.trece.regulusApi.db.regulus.repo.EstadoRepository;
 import br.jus.trece.regulusApi.db.regulus.repo.MagistradoRepository;
 import br.jus.trece.regulusApi.db.regulus.repo.QueriesRepository;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -67,15 +77,38 @@ public class Controller {
 	@Autowired
 	DistanciaRepository distanciaRepository;
 
-	@GetMapping("/autenticar")
-	public ResponseEntity<Token> autenticar(@RequestBody LoginRequestModel loginRequestModel) {
+	@Autowired
+	AuthenticationManager authenticationManager;
+
+	private SecurityContextRepository securityContextRepository =
+        new HttpSessionSecurityContextRepository();
+
+	@PostMapping("/login")
+	public ResponseEntity<String> login(@RequestBody LoginRequestModel loginRequest, HttpServletRequest request, HttpServletResponse response) {
+		Authentication authenticationRequest =
+			UsernamePasswordAuthenticationToken.unauthenticated(loginRequest.getLogin(), loginRequest.getSenha());
+		Authentication authenticationResponse =
+			this.authenticationManager.authenticate(authenticationRequest);
+		
+		// ...
+
+		/*SecurityContext sc = SecurityContextHolder.getContext();
+		sc.setAuthentication(authenticationResponse);
+		SecurityContextHolder.setContext(sc);
+		securityContextRepository.saveContext(sc, request, response);*/
+		ResponseEntity<String> re = new ResponseEntity<String>("ok!", HttpStatus.OK); 
+		return re;
+	}
+
+	@PostMapping("/autenticar")
+	public ResponseEntity<Token> autenticar(@RequestBody LoginRequestModel loginRequestModel, HttpServletRequest request, HttpServletResponse response) {
 		try {
 			System.out.println("teste pré");
-			//Token token = loginBean.entrar(loginRequestModel.getLogin(), loginRequestModel.getSenha());
+			Token token = loginBean.entrar(loginRequestModel.getLogin(), loginRequestModel.getSenha(), request, response);
 			System.out.println("teste pós");
-			//ResponseEntity<Token> response = new ResponseEntity<Token>(token, HttpStatus.OK); 
-			ResponseEntity<Token> response = new ResponseEntity<>(null, HttpStatus.OK); 
-			return response;
+			ResponseEntity<Token> re = new ResponseEntity<Token>(token, HttpStatus.OK); 
+			//ResponseEntity<Token> response = new ResponseEntity<>(null, HttpStatus.OK); 
+			return re;
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
