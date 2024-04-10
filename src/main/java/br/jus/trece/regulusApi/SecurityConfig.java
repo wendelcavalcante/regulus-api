@@ -87,9 +87,11 @@ public class SecurityConfig {
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http
 			.authorizeHttpRequests((authorize) -> authorize
-                .requestMatchers("/api/login").permitAll()
+                .requestMatchers("/api/**").permitAll()
                 //.requestMatchers("/api/zonas").hasAuthority("ADMIN")
-				.anyRequest().authenticated()
+                .requestMatchers("/teste.html").permitAll()
+                .requestMatchers("/**").permitAll()
+				//.anyRequest().authenticated()
 			)
             .cors(
                 (cors) -> cors
@@ -137,7 +139,7 @@ public class SecurityConfig {
         configuration.setAllowedMethods(Arrays.asList("GET","POST", "OPTIONS"));
         //configuration.setAllowedMethods(Arrays.asList("*"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
+        source.registerCorsConfiguration("/api/**", configuration);
         return source;
     }
     

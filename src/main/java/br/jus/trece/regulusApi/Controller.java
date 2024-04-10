@@ -83,7 +83,7 @@ public class Controller {
 	private SecurityContextRepository securityContextRepository =
         new HttpSessionSecurityContextRepository();
 
-	@PostMapping("/login")
+	@RequestMapping("/login")
 	public ResponseEntity<String> login(@RequestBody LoginRequestModel loginRequest, HttpServletRequest request, HttpServletResponse response) {
 		Authentication authenticationRequest =
 			UsernamePasswordAuthenticationToken.unauthenticated(loginRequest.getLogin(), loginRequest.getSenha());
