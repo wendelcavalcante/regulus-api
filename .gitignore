@@ -31,3 +31,19 @@ build/
 
 ### VS Code ###
 .vscode/
+
+HELP.md
+target/
+### VS Code ###
+src/main/js/node_modules/
+src/main/js/fonts/
+src/main/js/build/
+src/main/js/*.woff
+src/main/js/*.woff2
+src/main/js/*.ttf
+src/main/js/*.eot
+src/main/resources/static/built/
+src/main/python/*.csv
+src/main/python/venv/
+src/main/python/myenv/
+
